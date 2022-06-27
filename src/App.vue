@@ -1,45 +1,39 @@
 <template>
-  <h1 :class="titleClass">Author : {{ greeting(authorRef) }}</h1>
-  <h1 class="name">ID : {{ authorReactive.id }}</h1>
-
-  <input :type="inputType" :value="authorRef" @input="updateName" />
-  <input :type="inputType" v-model="authorRef" />
-  <button class="btn btn-primary" @click="updateName">Click</button>
+  <div class="container">
+    <h1>TODO</h1>
+    <form class="d-flex" @submit.prevent="addTodo">
+      <div class="flex-grow-1 mr-2">
+        <input class="form-control" type="text" v-model="todo" />
+      </div>
+      <div>
+        <button class="btn btn-primary" type="submit">Click</button>
+      </div>
+    </form>
+  </div>
+  {{ todos }}
 </template>
 
 <script>
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 
 export default {
   setup() {
-    const authorRef = ref("ddingg");
-    const authorReactive = reactive({
-      id: 1,
-    }); // object or array만 reactive에서 사용 가능
+    const todo = ref("ddingg");
+    const todos = ref([]);
 
-    const inputType = "number";
+    const addTodo = (e) => {
+      e.preventDefault();
 
-    const titleClass = ref("name");
-
-    const greeting = (v) => `Hello ${v}`;
-
-    // const updateName = () => {
-    //   authorRef.value = "update ddingg";
-    //   titleClass.value = "title";
-    //   authorReactive.id = 10;
-    // };
-
-    const updateName = (e) => {
-      authorRef.value = e.target.value;
+      todos.value.push({
+        id: Date.now(),
+        value: e.target.value,
+      });
     };
 
     return {
-      titleClass,
-      authorRef,
-      authorReactive,
-      inputType,
-      greeting,
-      updateName,
+      addTodo,
+      todo,
+      todos,
     };
   },
 };
