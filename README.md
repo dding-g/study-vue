@@ -16,4 +16,32 @@
   - 두개는 같은 동작을 함. value, input 두개 다 바인딩 해줄 필요 없이 v-model 사용으로 한번에 가능
 - `form`에서 `preventDefault`를 vue방식으로 표현 할 수 있음.
   - [document](https://kr.vuejs.org/v2/guide/syntax.html#%EC%88%98%EC%8B%9D%EC%96%B4)에서 볼 수 있음.
-  - ``
+- `v-for`을 사용할 때 `:key`는 필수로 바운딩 필요함.
+  - ```
+    <div v-for="todo in todos" :key="todo.id" class="card">
+      <div class="card-body p-2">
+        {{ todo }}
+      </div>
+    </div>
+    ```
+- `v-show` , `v-if` [document](https://vuejs.org/guide/essentials/conditional.html#v-show)
+  - `v-show`는 `display:none` 으로 css 값이 변경됨. 초기 렌더에 비용이 많이 듦.
+    - ```
+        <div v-show="true">true</div>
+        <div v-show="false">true</div>
+      ```
+  - `v-if` [document](https://vuejs.org/api/built-in-directives.html#v-if)
+    - toggle 하는데 비용이 많이 듦
+- `checkbox` 바인딩
+  - ```
+    <input
+      class="form-check-input"
+      type="checkbox"
+      v-model="todo.completed"
+    />
+    <label class="form-check-label">
+      {{ todo.value }}
+    </label>
+    ```
+- [style 바인딩](https://kr.vuejs.org/v2/guide/class-and-style.html#%EA%B0%9D%EC%B2%B4-%EA%B5%AC%EB%AC%B8-1)
+  -
