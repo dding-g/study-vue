@@ -44,4 +44,7 @@
     </label>
     ```
 - [style 바인딩](https://kr.vuejs.org/v2/guide/class-and-style.html#%EA%B0%9D%EC%B2%B4-%EA%B5%AC%EB%AC%B8-1)
-  -
+  - `:style`
+    - `<div :style="todo.completed ? todoStyle : {}">style 바인딩</div>`
+  - `:class`
+    - `<div :class="{ todo : todo.completed }">class 바인딩</div>` todo.completed가 true면 `todo` css class 적용

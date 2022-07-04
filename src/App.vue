@@ -9,9 +9,10 @@
         <button class="btn btn-primary" type="submit">Click</button>
       </div>
     </form>
-    <div v-for="todo in todos" :key="todo.id" class="card">
-      <div class="card-body p-2">
-        <div class="form-check">
+    <div v-if="todos.length === 0">추가된 TODO가 없습니다.</div>
+    <div v-for="(todo, idx) in todos" :key="todo.id" class="card">
+      <div class="card-body p-2 d-flex align-items-center">
+        <div class="form-check flex-grow-1">
           <input
             class="form-check-input"
             type="checkbox"
@@ -20,11 +21,14 @@
           <label
             class="form-check-label"
             :class="{ todo: todo.completed }"
-            :style="todo.completed ? todoStype : {}"
+            :style="todo.completed ? todoStyle : {}"
           >
             {{ todo.value }}
           </label>
         </div>
+        <button class="btn btn-danger btn-sm" @click="deleteTodo(idx)">
+          Delete
+        </button>
       </div>
     </div>
   </div>
@@ -37,7 +41,7 @@ export default {
   setup() {
     const todo = ref("ddingg");
     const todos = ref([]);
-    const todoStype = {
+    const todoStyle = {
       textDecoration: "line-through",
       color: "gray",
     };
@@ -52,11 +56,16 @@ export default {
       todo.value = "";
     };
 
+    const deleteTodo = (idx) => {
+      todos.value.splice(idx, 1);
+    };
+
     return {
       addTodo,
       todo,
       todos,
-      todoStype,
+      todoStyle,
+      deleteTodo,
     };
   },
 };
