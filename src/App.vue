@@ -1,71 +1,83 @@
 <template>
+  <router-view></router-view>
   <div class="container">
-    <h1>TODO</h1>
-    <form class="d-flex" @submit.prevent="addTodo">
-      <div class="flex-grow-1 mr-2">
-        <input class="form-control" type="text" v-model="todo" />
-      </div>
-      <div>
-        <button class="btn btn-primary" type="submit">Click</button>
-      </div>
-    </form>
-    <div v-if="todos.length === 0">추가된 TODO가 없습니다.</div>
-    <div v-for="(todo, idx) in todos" :key="todo.id" class="card">
-      <div class="card-body p-2 d-flex align-items-center">
-        <div class="form-check flex-grow-1">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            v-model="todo.completed"
-          />
-          <label
-            class="form-check-label"
-            :class="{ todo: todo.completed }"
-            :style="todo.completed ? todoStyle : {}"
-          >
-            {{ todo.value }}
-          </label>
-        </div>
-        <button class="btn btn-danger btn-sm" @click="deleteTodo(idx)">
-          Delete
-        </button>
-      </div>
-    </div>
+    <h2>TODO</h2>
+    <input
+      class="form-control"
+      type="text"
+      v-model="searchText"
+      placeholder="Search"
+    />
+    <hr />
+    <TodoSimpleForm @add-todo="addTodo" />
+    <div v-if="filteredTodos.length === 0">Nothing to search.</div>
+    <TodoList
+      :todos="filteredTodos"
+      @toggle-todo="toggleTodo"
+      @delete-todo="deleteTodo"
+    />
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import axios from "axios";
+import TodoSimpleForm from "@/components/TodoSimpleForm.vue";
+import TodoList from "@/components/TodoList.vue";
 
 export default {
+  components: {
+    TodoSimpleForm,
+    TodoList,
+  },
   setup() {
-    const todo = ref("ddingg");
     const todos = ref([]);
     const todoStyle = {
       textDecoration: "line-through",
       color: "gray",
     };
 
-    const addTodo = () => {
-      todos.value.push({
-        id: Date.now(),
-        value: todo.value,
-        completed: false,
-      });
-
-      todo.value = "";
-    };
-
     const deleteTodo = (idx) => {
       todos.value.splice(idx, 1);
     };
 
+    const addTodo = async (todo) => {
+      try {
+        const { data } = await axios.post("http://localhost:3000/todos", {
+          subject: todo.subject,
+          completed: todo.completed,
+        });
+
+        todos.value.push(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    const toggleTodo = (idx) => {
+      todos.value[idx].completed = !todos.value[idx].completed;
+    };
+
+    const searchText = ref("");
+
+    const filteredTodos = computed(() => {
+      if (searchText.value) {
+        return todos.value.filter((todo) =>
+          todo.value.includes(searchText.value)
+        );
+      }
+
+      return todos.value;
+    });
+
     return {
-      addTodo,
-      todo,
       todos,
       todoStyle,
+      addTodo,
       deleteTodo,
+      toggleTodo,
+      searchText,
+      filteredTodos,
     };
   },
 };

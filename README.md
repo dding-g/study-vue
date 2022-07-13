@@ -48,3 +48,29 @@
     - `<div :style="todo.completed ? todoStyle : {}">style 바인딩</div>`
   - `:class`
     - `<div :class="{ todo : todo.completed }">class 바인딩</div>` todo.completed가 true면 `todo` css class 적용
+- vue에서 컴포넌트를 만들때는 크게 3가지로 구분됨. `tempalte, script, style`
+
+  - ```
+    <template>Todo Simple Form</template>
+
+    <script>
+    export default {};
+    </script>
+
+    <style></style>
+    ```
+
+- 자식 컴포넌트에서 부모 컴포넌트로 이벤트 emit
+
+  - 자식 컴포넌트에서 context emit 가능. [docs](https://vuejs.org/guide/components/events.html#emitting-and-listening-to-events)
+
+- computed values
+  - 탬플릿 내부에 너무 많은 연산을 집어넣게 되면 덩치가 커지고 유지, 관리가 어려울 수 있음.
+  - 이걸 `computed value`가 해결해 주는데 ref로 선언된 객체가 변할 때 computed로 등록 된 값은 다시 계산되서 렌더링됨
+  - 기본적으로 `getter`이고 `setter`를 등록할 수 있음. [writable-computed](https://vuejs.org/guide/essentials/computed.html#writable-computed)
+  - [composition api 가 나온 배경](https://kyounghwan01.github.io/blog/Vue/vue3/composition-api/#composition-api%E1%84%80%E1%85%A1-%E1%84%82%E1%85%A1%E1%84%8B%E1%85%A9%E1%84%80%E1%85%A6-%E1%84%83%E1%85%AC%E1%86%AB-%E1%84%87%E1%85%A2%E1%84%80%E1%85%A7%E1%86%BC)
+  - 어떨때 computed를 쓰고 어떨때 method를 써야 하는가?
+    - computed는 여러곳에서 사용해도 1회만 연산 하는데, method는 호출 할 때 마다 연산을 새로함.
+- vue-router
+  - spa용 vue router
+  - [history mode 차이](https://router.vuejs.org/guide/essentials/history-mode.html#different-history-modes)
